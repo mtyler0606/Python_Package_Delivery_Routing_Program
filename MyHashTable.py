@@ -60,12 +60,8 @@ class MyChainedHashTable:
         # Alternate - return hash(key) % self.size
 
 
-'''
-    def resize_table(self, number_to_add):
-        for i in range(self.size, self.size + number_to_add):
-            self.table[i] = []
-            self.size += number_to_add
-'''
+
+
 bestMovies = [
     [1, "CITIZEN KANE - 1941"],
     [2, "CASABLANCA - 1942"],
@@ -79,7 +75,7 @@ bestMovies = [
     [10, "SINGIN' IN THE RAIN - 1952"],
     [11, "STAR WARS - 1977"]
 ]
-
+'''
 myHash = MyChainedHashTable(10)
 
 print("\nInsert:")
@@ -103,3 +99,5 @@ print(myHash.table)
 
 myHash.remove(11)  # Key=11, item="STAR WARS - 1977" to remove
 print(myHash.table)
+
+'''
