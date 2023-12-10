@@ -7,6 +7,12 @@ class Address:
         self.edges = {}
         self.distances = []
 
+    def get_distance(self, other_address: str):
+        return self.edges[other_address]
+
+    def __str__(self):
+        return "Address:" + self.name
+
 
 def get_addresses():
     with open('WGUPS Distance Table(1).csv', 'r') as distance_CSV:
@@ -22,8 +28,8 @@ def get_addresses():
         for i in range(2, len(reader_lines[0])-2):
             address_strings.append(reader_lines[0][i].split("\n")[0].strip())
 
-        # list of address objects, for each address object, extract distances to other addresses
-        addresses = []
+        # dictionary of address objects, for each address object, extract distances to other addresses
+        addresses = {}
         for i in range(len(address_strings)):
             newAddress = Address(address_strings[i])
             city_distances = {}
@@ -32,9 +38,18 @@ def get_addresses():
                 city_distances[address_strings[j]] = float(reader_lines[i+1][j+2])
                 city_tuples.append((float(reader_lines[i+1][j+2]), address_strings[j]))
             newAddress.edges = city_distances
-            newAddress.distances = sorted(city_tuples)
-            addresses.append(newAddress)
+            newAddress.distances = sorted(city_tuples[1:])
+            addresses[newAddress.name] = newAddress
 
-        return address_strings, addresses
+        return addresses
 
+'''
+X = get_addresses()
+y = X[0]
+z = X[1]
 
+print(y)
+print(z[0].name)
+print(z[0].edges)
+print(z[0].distances)
+'''
