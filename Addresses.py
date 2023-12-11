@@ -45,11 +45,11 @@ def get_addresses():
 
 '''
 X = get_addresses()
-y = X[0]
-z = X[1]
+y = X["HUB"]
+
 
 print(y)
-print(z[0].name)
-print(z[0].edges)
-print(z[0].distances)
+print(y.name)
+print(y.edges)
+print(y.distances)
 '''

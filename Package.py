@@ -1,6 +1,7 @@
 import csv
 from MyHashTable import MyChainedHashTable
 from enum import Enum
+import datetime
 
 
 class PackageStatus(Enum):
@@ -23,6 +24,8 @@ class Package:
         self.special_notes = special_notes
         self.status = PackageStatus.AT_HUB
         self.time_delivered = None
+        self.time_loaded = None
+        self.truck = None
 
 
     def __str__(self):
