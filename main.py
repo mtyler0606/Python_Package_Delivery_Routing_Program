@@ -20,11 +20,14 @@ def main():
     #Correct wrong address
     wrong_address = package_hash.search(9)
     wrong_address.address = '410 S State St'
+    #Time when address is corrected
+    wrong_address.time_at_hub = datetime.time(10, 20, 0, 0)
 
     # set time_at_hub for late packages
     late_packages_by_id = [6 , 25, 28, 32]
     for package_id in late_packages_by_id:
         package_hash.search(package_id).time_at_hub = datetime.time(9, 5, 0, 0)
+
 
     # for each package set package.address to address object instead of string
     for package in packages_at_hub:
@@ -49,7 +52,7 @@ def main():
     load_truck1_first_time = [14, 15, 16, 34, 20, 21, 19, 12, 17, 4, 40, 1, 13, 39, 37]
     load_truck2_first_time = [11, 23, 18, 35, 27, 3, 36, 8, 10, 29, 22, 7, 30, 24, 2, 33]
 
-    load_truck1_second_time = [6, 25, 28, 31, 32, 26]
+    load_truck1_second_time = [6, 25, 28, 31, 32, 26] #6, 31 late!
     load_truck2_second_time = [9, 5, 38]
 
     for item in set(load_truck1_first_time):
@@ -80,7 +83,7 @@ def main():
 
     all_deliveries = truck1.deliveries + truck2.deliveries
 
-    UI = User_Interface.UI(all_deliveries, truck1, truck2)
+    UI = User_Interface.UI(all_deliveries, truck1, truck2, package_hash, packages_at_hub)
     UI.start_ui()
 
 '''''''''''
