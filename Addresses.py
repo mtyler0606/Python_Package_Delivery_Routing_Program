@@ -4,8 +4,11 @@ import csv
 class Address:
     def __init__(self, name):
         self.name = name
+        # Adjacent addresses as a dictionary with address name as key
         self.edges = {}
+        # Adjacent addresses a list of tuples sorted by distance. first value is distance, second value is address object
         self.distances = []
+        self.packages = []
 
     def get_distance(self, other_address: str):
         return self.edges[other_address]

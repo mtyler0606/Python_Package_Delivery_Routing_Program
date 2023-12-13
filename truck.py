@@ -1,6 +1,7 @@
 import Addresses
 import Package
 import datetime
+import delivery
 #from datetime import datetime, timedelta, time
 
 
@@ -13,6 +14,7 @@ class Truck:
         self.time = datetime.datetime(2024, 1, 1, 8, 0, 0, 0)
         self.distance_traveled = 0
         self.number = truck_number
+        self.deliveries = []
 
     def load_package(self, package: Package):
         package.status = Package.PackageStatus.ON_TRUCK
@@ -32,6 +34,9 @@ class Truck:
                             package.status = Package.PackageStatus.DELIVERED
                             package.time_delivered = self.time.time()
                             self.packages.remove(package)
+
+                            new_delivery = delivery.Delivery(self, package, package.address, self.time.time(), round(self.distance_traveled, 5))
+                            self.deliveries.append(new_delivery)
                             break
                     else:
                         continue
@@ -42,6 +47,10 @@ class Truck:
     def advance_time_and_distance(self, miles: float):
         self.time += miles * datetime.timedelta(hours=1/18)
         self.distance_traveled += miles
+
+    def wait_at_hub(self, new_time: datetime.time):
+        if self.time.time() < new_time:
+            self.time += new_time - self.time.time()
 
     def __str__(self):
         return "Truck No. " + str(self.number)

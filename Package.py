@@ -10,6 +10,7 @@ class PackageStatus(Enum):
     ON_TRUCK = 2
     DELIVERED = 3
 
+import datetime
 
 class Package:
     def __init__(self, package_id, address, city, state, zip_code, delivery_deadline, weight, special_notes):
@@ -25,11 +26,11 @@ class Package:
         self.status = PackageStatus.AT_HUB
         self.time_delivered = None
         self.time_loaded = None
+        self.time_at_hub = datetime.time(8, 0, 0, 0)
         self.truck = None
 
-
     def __str__(self):
-        return f"{self.package_id}, {self.address}, {self.city}, {self.state}, {self.zip_code}, {self.deliver_deadline}, {self.weight}, {self.special_notes}"
+        return f"{self.package_id}, {self.address}, {self.deliver_deadline}, {self.special_notes}"
 
 
 def get_packages():
