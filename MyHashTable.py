@@ -1,3 +1,41 @@
+class MyChainedHashTable:
+    def __init__(self, initial_size=64):
+        self.size = initial_size
+        self.table = []
+        for i in range(initial_size):
+            self.table.append([])
+
+    def insert(self, key, item):
+        bucket = self.hash_function(key)
+        # search all items in "bucket" to see if key has been used
+        for item in self.table[bucket]:
+            if item[0] == key:
+                # raises exception if a new item is inserted with a key  that is already present
+                if item[1] != item:
+                    raise Exception("ID in use. ID's must be unique")
+                # if key and item are inserted again, just returns with no effect
+                else:
+                    return
+        # if key has not been used inserts item into hash table
+        self.table[bucket].append([key, item])
+
+    def search(self, key):
+        bucket = self.hash_function(key)
+        for item in self.table[bucket]:
+            if item[0] == key:
+                return item[1]
+
+    def remove(self, key):
+        bucket = self.hash_function(key)
+        for item in self.table[bucket]:
+            if item[0] == key:
+                self.table[bucket].remove(item)
+
+    def hash_function(self, key):
+        return key % self.size
+        # Alternate - return hash(key) % self.size
+
+
 class MyHashTable:
     def __init__(self, initial_size=64):
         self.size = initial_size
@@ -26,78 +64,3 @@ class MyHashTable:
         # Alternate - return hash(key) % self.size
 
 
-class MyChainedHashTable:
-    def __init__(self, initial_size=64):
-        self.size = initial_size
-        self.table = []
-        for i in range(initial_size):
-            self.table.append([])
-
-    def insert(self, key, item):
-        bucket = self.hash_function(key)
-        for item in self.table[bucket]:
-            if item[0] == key:
-                if item[1] != item:
-                    raise Exception("ID in use. ID's must be unique")
-                else:
-                    return
-        self.table[bucket].append([key, item])
-
-    def search(self, key):
-        bucket = self.hash_function(key)
-        for item in self.table[bucket]:
-            if item[0] == key:
-                return item[1]
-
-    def remove(self, key):
-        bucket = self.hash_function(key)
-        for item in self.table[bucket]:
-            if item[0] == key:
-                self.table[bucket].remove(item)
-
-    def hash_function(self, key):
-        return key % self.size
-        # Alternate - return hash(key) % self.size
-
-
-
-
-bestMovies = [
-    [1, "CITIZEN KANE - 1941"],
-    [2, "CASABLANCA - 1942"],
-    [3, "THE GODFATHER - 1972"],
-    [4, "GONE WITH THE WIND - 1939"],
-    [5, "LAWRENCE OF ARABIA - 1962"],
-    [6, "THE WIZARD OF OZ - 1939"],
-    [7, "THE GRADUATE - 1967"],
-    [8, "ON THE WATERFRONT- 1954"],
-    [9, "SCHINDLER'S LIST -1993"],
-    [10, "SINGIN' IN THE RAIN - 1952"],
-    [11, "STAR WARS - 1977"]
-]
-'''
-myHash = MyChainedHashTable(10)
-
-print("\nInsert:")
-myHash.insert(bestMovies[0][0], bestMovies[0][1])  # 2nd bucket; Key=1, item="CITIZEN KANE - 1941"
-print(myHash.table)
-
-myHash.insert(bestMovies[10][0], bestMovies[10][1])  # 2nd bucket as well; Key=11, item="STAR WARS - 1977"
-print(myHash.table)
-
-print("\nSearch:")
-print(myHash.search(1))  # Key=1, item="CITIZEN KANE - 1941"
-print(myHash.search(11))  # Key=11, item="STAR WARS - 1977"; so same bucket and Chainin is working
-
-#print("\nUpdate:")
-myHash.insert(1, "Star Trek - 1979")  # 2nd bucket; Key=1, item="Star Trek - 1979"
-#print(myHash.table)
-
-print("\nRemove:")
-myHash.remove(1)  # Key=1, item="Star Trek - 1979" to remove
-print(myHash.table)
-
-myHash.remove(11)  # Key=11, item="STAR WARS - 1977" to remove
-print(myHash.table)
-
-'''

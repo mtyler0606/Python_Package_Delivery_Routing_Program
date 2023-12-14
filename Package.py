@@ -10,8 +10,7 @@ class PackageStatus(Enum):
     ON_TRUCK = 2
     DELIVERED = 3
 
-import datetime
-
+# the Package class contains all the information about a package
 class Package:
     def __init__(self, package_id, address, city, state, zip_code, delivery_deadline, weight, special_notes):
         self.package_id = package_id
@@ -19,7 +18,6 @@ class Package:
         self.city = city
         self.state = state
         self.zip_code = zip_code
-        # String. Convert to time?
         self.deliver_deadline = delivery_deadline
         self.weight = weight
         self.special_notes = special_notes
@@ -33,18 +31,22 @@ class Package:
         return f"{self.package_id}, {self.address}, {self.deliver_deadline}, {self.special_notes}"
 
 
+# get_packages function uses data from the Package CSV file to create a Package object for each package
 def get_packages():
-    PackageHashtable = MyChainedHashTable(41)
+    package_hashtable = MyChainedHashTable(41)
     package_list = []
 
     with open('WGUPS Package File cleaned.csv', 'r') as Package_CSV:
-        Package_info = csv.reader(Package_CSV)
+        package_info = csv.reader(Package_CSV)
 
         next(Package_CSV)
-        for line in Package_info:
+        for line in package_info:
+            # line[0] - package_id, line[1] - address, line[2] - city, line[3] - state, line[4] - zip_code
+            # line[5] - delivery deadline, line[6] - weight, line[7] - special notes
             newPackage = Package(int(line[0]), line[1], line[2], line[3], line[4], line[5], line[6], line[7])
-            PackageHashtable.insert(int(line[0]), newPackage)
+            # inserts new package into hash table with package id as key and package object as value
+            package_hashtable.insert(int(line[0]), newPackage)
             package_list.append(newPackage)
-    return PackageHashtable, package_list
+    return package_hashtable, package_list
 
 

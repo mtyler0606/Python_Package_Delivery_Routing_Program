@@ -15,7 +15,7 @@ class UI:
 
     def start_ui(self):
         welcome_message = ("Enter:\n1 for Status of All Packages and Total Mileage\n2 to get status of a single package at a particular time\n"
-                           "3 to get the status of all packages at a particular time\n4 to display information for packages with extra requirements\n-1 to Exit\n")
+                           "3 to get the status of all packages_to_be_delivered at a particular time\n4 to display information for packages_to_be_delivered with extra requirements\n-1 to Exit")
         print(welcome_message)
 
         while True:
@@ -38,17 +38,11 @@ class UI:
             print("\nEnter 5 to repeat menu options")
 
     def get_final_status(self):
-        user_input = input("Enter 1 to order deliveries by package id, Anything else orders packages by delivery time\n")
-        if user_input == '1':
-            for d in sorted(self.deliveries, key=lambda x: x.package.package_id):
-                print(d)
-            total_distance = self.truck1.distance_traveled + self.truck2.distance_traveled
-            print("Total distance of traveled by all trucks", round(total_distance, 5))
-        else:
-            for d in sorted(self.deliveries, key= lambda x: x.time):
-                print(d)
-            total_distance = self.truck1.distance_traveled + self.truck2.distance_traveled
-            print("Total distance of traveled by all trucks", round(total_distance, 5))
+        print("--Delivery information for each package ordered by delivery time--")
+        for d in sorted(self.deliveries, key=lambda x: x.time):
+            print(d)
+        total_distance = self.truck1.distance_traveled + self.truck2.distance_traveled
+        print("\nTotal distance of traveled by all trucks", round(total_distance, 5))
 
     def get_one_package(self):
         package_id = None
@@ -94,15 +88,26 @@ class UI:
             return "Delivered"
 
     def get_special_requirements(self):
-        packages_with_delivery_deadlines = [1, 6, 13, 14, 16, 20, 25, 29, 30, 31, 34, 37, 40]
+        packages_with_delivery_deadlines = [1, 6, 13, 14, 15, 16, 20, 25, 29, 30, 31, 34, 37, 40]
         print("--Packages with a delivery deadline--")
         for p in packages_with_delivery_deadlines:
             package = self.package_hash.search(p)
             print(f"{package.package_id}, deadline: {package.deliver_deadline} delivered: {package.time_delivered}")
         print()
-        packages_that_arrive_late_to_hub = [9, 25, 28, 32]
-        print("--Packages that arrive late to hub")
+        packages_that_arrive_late_to_hub = [6, 9, 25, 28, 32]
+        print("--Packages that arrive late to hub--")
         for p in packages_that_arrive_late_to_hub:
             package = self.package_hash.search(p)
             print(f"{package.package_id}, arrives at hub: {package.time_at_hub} time loaded: {package.time_loaded}")
         print()
+        packages_required_to_be_on_Truck2 = [3, 18, 36, 38]
+        print("--Packages required to be delivered on only Truck No. 2--")
+        for p in packages_required_to_be_on_Truck2:
+            package = self.package_hash.search(p)
+            print(f"{package.package_id}, Truck No. {package.truck.number} (special notes: {package.special_notes})")
+        print()
+        packages_required_to_be_delivered_together = [13, 14, 15, 16, 19, 20]
+        print("--Packages required to be delivered together--")
+        for p in packages_required_to_be_delivered_together:
+            package = self.package_hash.search(p)
+            print(f"{package.package_id}, Truck No. {package.truck.number} Loaded: {package.time_loaded}")
