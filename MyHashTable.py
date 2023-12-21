@@ -5,7 +5,13 @@ class MyChainedHashTable:
         for i in range(initial_size):
             self.table.append([])
 
-    def insert(self, key, item):
+    def insert(self, key: int, item):
+        """insert: inserts a value into the hash table.
+        Time complexity: O(N), Space complexity: O(N) where N is the length of each bucket
+        :param key: integer
+        :param item: any type
+        :raises: error if exact key and item are already in the hash table
+        """
         bucket = self.hash_function(key)
         # search all items in "bucket" to see if key has been used
         for item in self.table[bucket]:
@@ -19,12 +25,14 @@ class MyChainedHashTable:
         # if key has not been used inserts item into hash table
         self.table[bucket].append([key, item])
 
+    # Time O(N), Space O(N) where N is the length of each bucket
     def search(self, key):
         bucket = self.hash_function(key)
         for item in self.table[bucket]:
             if item[0] == key:
                 return item[1]
 
+    # Time O(N), Space O(N) where N is the length of each bucket
     def remove(self, key):
         bucket = self.hash_function(key)
         for item in self.table[bucket]:
@@ -34,33 +42,3 @@ class MyChainedHashTable:
     def hash_function(self, key):
         return key % self.size
         # Alternate - return hash(key) % self.size
-
-
-class MyHashTable:
-    def __init__(self, initial_size=64):
-        self.size = initial_size
-        self.table = []
-        for i in range(initial_size):
-            self.table.append([])
-
-    def insert(self, key, item):
-        bucket = self.hash_function(key)
-        if len(self.table[bucket]) != 0:
-            raise Exception("Key already in use. Remove previous item at key before inserting new item.")
-        else:
-            self.table[bucket] = item
-
-    def search(self, key):
-        if len(self.table[key]) != 0:
-            return self.table[key]
-        else:
-            return "Item not found"
-
-    def remove(self, key):
-        self.table[key] = []
-
-    def hash_function(self, key):
-        return key % self.size
-        # Alternate - return hash(key) % self.size
-
-

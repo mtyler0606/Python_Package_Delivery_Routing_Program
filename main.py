@@ -1,4 +1,5 @@
-# Student ID 010919298
+# Student ID: 010919298
+# Name: Mason Tyler
 
 import MyHashTable
 import truck
@@ -10,24 +11,27 @@ import User_Interface
 def main():
 
     # Addresses.py contains code for the Address class, and the get_addresses function
-    # The get_addresses function reads the address info for the distance table CSV file and converts it into Address objects
-    # It then returns a dictionary of address objects the Address.name as the key
+    # The get_addresses function reads the address info from the distance table CSV file and converts it into Address objects
+    # It then returns a dictionary of address objects with the Address.name as the keys
     dictionary_of_addresses = Addresses.get_addresses()
 
     # Package.py contains code for the Package class, and the get_packages function
-    # get_packages returns reads the package information for the package CSV file
-    # creates a Package object for each package, and returns both hash table and a list of packages_to_be_delivered
+    # The get_packages returns reads the package information for the package CSV file
+    # It creates a Package object for each package
+    # It returns the packages in both hash table and a list
     packages_from_file = Package.get_packages()
     package_hash = packages_from_file[0]
     package_list = packages_from_file[1]
 
+    # One package has the incorrect address, and will have the correct address until 10:20
     # Correct address for the package with the wrong address
     wrong_address = package_hash.search(9)
     wrong_address.address = '410 S State St'
     # sets the time when address is corrected as the time when the package arrives at the Hub
     wrong_address.time_at_hub = datetime.time(10, 20, 0, 0)
 
-    # set time_at_hub for the late packages_to_be_delivered
+    # Some packages will arrive to the hub late
+    # set time_at_hub as 9:05 for the late packages
     late_packages_by_id = [6, 25, 28, 32]
     for package_id in late_packages_by_id:
         package_hash.search(package_id).time_at_hub = datetime.time(9, 5, 0, 0)
@@ -63,14 +67,14 @@ def main():
         truck2.load_package(package_hash.search(item))
 
     # the Truck.set_route_nearest_neighbor method contains the nearest neighbor algorithm
-    # All routing, tracking time and distance, and marking packages_to_be_delivered loaded or delivered is handled within the Truck class
+    # All routing, tracking time and distance, and marking packages as loaded or delivered is handled within the Truck class
     truck1.set_route_nearest_neighbor()
     truck2.set_route_nearest_neighbor()
-    # Reset current_location to hub for each truck
+    # Reset current_location to hub for each truck after first route for each truck
     truck1.current_location = dictionary_of_addresses["HUB"]
     truck2.current_location = dictionary_of_addresses["HUB"]
 
-    # truck1 must wait at the HUB for package 9 to have the correct address
+    # truck1 must wait at the HUB for package with id 9 to have the correct address
     if(truck1.time.time() < datetime.time(10, 20, 0, 0 )):
         truck1.time = datetime.datetime(2024, 1,1,10, 20, 0 ,0)
 
@@ -85,7 +89,7 @@ def main():
     truck2.set_route_nearest_neighbor()
 
     # Delivery objects are created for each package delivery
-    # deliveries for each truck are combined into one list to be passed to the ui
+    # deliveries for each truck are combined into one list to be passed to the user interface
     all_deliveries = truck1.deliveries + truck2.deliveries
 
     # Create and start the user interface

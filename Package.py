@@ -10,6 +10,7 @@ class PackageStatus(Enum):
     ON_TRUCK = 2
     DELIVERED = 3
 
+
 # the Package class contains all the information about a package
 class Package:
     def __init__(self, package_id, address, city, state, zip_code, delivery_deadline, weight, special_notes):
@@ -31,8 +32,13 @@ class Package:
         return f"{self.package_id}, {self.address}, {self.deliver_deadline}, {self.special_notes}"
 
 
-# get_packages function uses data from the Package CSV file to create a Package object for each package
+
 def get_packages():
+    """get_packages: reads CSV file and extracts package data, creates a Package object for each package
+    adds packages to hash table and list
+    :return: hash table of packages and list of packages
+    Time and space complexity: O(N) where N is the number of packages
+    """
     package_hashtable = MyChainedHashTable(41)
     package_list = []
 

@@ -1,5 +1,6 @@
 import csv
 
+
 # One address object for each address. Stores distance information to other addresses
 class Address:
     def __init__(self, name):
@@ -14,9 +15,14 @@ class Address:
     def __str__(self):
         return "Address:" + self.name
 
-# Function reads distance information from CSV file and creates Address objects.
-# Returns a dictionary of Address objects to main.py
+
 def get_addresses():
+    """get_addresses: reads distance information from CSV file and creates Address objects.
+        Returns a dictionary of Address objects to main.py
+        time complexity of O(N^2) [nested FOR loops], space O(N^2) each address stores information about every other address
+
+    :return: dictionary of Address objects with address name (string) as key
+    """
     with open('WGUPS Distance Table(1).csv', 'r') as distance_CSV:
         reader = csv.reader(distance_CSV)
 
@@ -52,9 +58,16 @@ def get_addresses():
         return addresses
 
 
-# Populates a list of Package objects to be delivered Address object
-# Can be Helpful for manually loading trucks. Not critical to program functionality
 def get_packages_for_every_address(self, dictionary_of_addresses: dict, package_list: list):
+    """Populates a list of Package objects to be delivered Address object
+    Can be Helpful for manually loading trucks. Not critical to program functionality
+    Time Complexity O(N^2) or (Addresses * Packages), Space O(N)
+
+    :param self:
+    :param dictionary_of_addresses:
+    :param package_list:
+    :return:
+    """
     for address in dictionary_of_addresses.values():
         for package in package_list:
             if package.address == address:

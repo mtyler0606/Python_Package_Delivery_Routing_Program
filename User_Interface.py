@@ -14,6 +14,9 @@ class UI:
         self.package_list = package_list
 
     def start_ui(self):
+        """ Starts the user interface. User can select different options from the terminal to display delivery information
+            When the user inputs "-1" the program concludes
+        """
         welcome_message = ("Enter:\n1 for Status of All Packages and Total Mileage\n2 to get status of a single package at a particular time\n"
                            "3 to get the status of all packages_to_be_delivered at a particular time\n4 to display information for packages_to_be_delivered with extra requirements\n-1 to Exit")
         print(welcome_message)
@@ -38,6 +41,8 @@ class UI:
             print("\nEnter 5 to repeat menu options")
 
     def get_final_status(self):
+        """Prints delivery information for all packages and total combined mileage traveled by all trucks
+        """
         print("--Delivery information for each package ordered by delivery time--")
         for d in sorted(self.deliveries, key=lambda x: x.time):
             print(d)
@@ -45,6 +50,9 @@ class UI:
         print("\nTotal distance of traveled by all trucks", round(total_distance, 5))
 
     def get_one_package(self):
+        """Prints the status of one package at a specific time.
+        User is first prompted to enter a package ID, and then prompted to enter a time
+        """
         package_id = None
         while True:
             try:
@@ -66,9 +74,9 @@ class UI:
         the_Package = self.package_hash.search(package_id)
         print(f"Status of Package {package_id} at {user_time}: {self.get_package_status(the_Package, user_time)}")
 
-        # if user_input ==
-
     def get_all_packages(self):
+        """Prints the status of all packages at a particular time of the user's choosing
+        """
         while True:
             try:
                 user_input = input("Enter time (HH:MM)\n")
@@ -80,6 +88,12 @@ class UI:
             print(f"Status of Package {package.package_id} at {user_time}: {self.get_package_status(package, user_time)}")
 
     def get_package_status(self, the_package: Package, the_time: datetime.time):
+        """Helper function used by get_all_packages and get_one_package. Returns a packages status in an easily readable format
+
+        :param the_package: a Package Type
+        :param the_time: a specific time
+        :return: a string representing the status of the package at the specific time in an easily readable format
+        """
         if the_time < the_package.time_loaded:
             return "At Hub"
         if the_time >= the_package.time_loaded and the_time < the_package.time_delivered:
@@ -88,6 +102,9 @@ class UI:
             return "Delivered"
 
     def get_special_requirements(self):
+        """Prints the information about all the packages that have special delivery requirements or constraints
+        in order to easily validate that all special requirements are met.
+        """
         packages_with_delivery_deadlines = [1, 6, 13, 14, 15, 16, 20, 25, 29, 30, 31, 34, 37, 40]
         print("--Packages with a delivery deadline--")
         for p in packages_with_delivery_deadlines:

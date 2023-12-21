@@ -15,16 +15,30 @@ class Truck:
         self.number = truck_number
         self.deliveries = []
 
-    # For the package passed in this method changes its status, sets its time_loaded, sets its truck
-    # the package is then added to the truck's packages_to_be_delivered list
     def load_package(self, package: Package):
+        """load_package: adds package object to a truck's packages_to_be_delivered list
+        changes package's status to ON_TRUCK, Set packages time_loaded at truck's current time
+        :param package: Package object
+        """
         package.status = Package.PackageStatus.ON_TRUCK
         package.time_loaded = self.time.time()
         package.truck = self
         self.packages_to_be_delivered.append(package)
 
-    # Finds route using nearest neighbor algorithm
     def set_route_nearest_neighbor(self):
+        """set_route_nearest_neighbor: Paths route through to deliver all packages in truck's packages_to_be_delivered list
+        Uses nearest-neighbor algorithm to route deliveries
+
+        For each delivery: adds delivery time to self.time and distance to self.distance_traveled,
+            changes package's status to DELIVERED, sets package's time_delivered
+            removes package from self.packages_to_be_delivered,
+            creates a new Delivery object, adds it to self.deliveries
+
+        After all packages are delivered return truck to HUB
+
+        Time Complexity: O(N^2) - nested FOR loops
+        Space: O(N)
+        """
         # while there are still packages to be delivered
         while len(self.packages_to_be_delivered) > 0:
             # current_location must be an Address object
@@ -58,6 +72,11 @@ class Truck:
 
     # adds the appropriate amount to the time and distance traveled based on the distance between locations
     def advance_time_and_distance(self, miles: float):
+        """
+        adds param miles to self.distance_traveled representing distance traveled by truck,
+        adds the trucks time to represent time elapsing while truck is travelling (truck travels at 18 miles per hour)
+        :param miles: float
+        """
         self.time += miles * datetime.timedelta(hours=1/18)
         self.distance_traveled += miles
 
