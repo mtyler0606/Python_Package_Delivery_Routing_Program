@@ -18,7 +18,9 @@ class UI:
             When the user inputs "-1" the program concludes
         """
         welcome_message = ("Enter:\n1 for Status of All Packages and Total Mileage\n2 to get status of a single package at a particular time\n"
-                           "3 to get the status of all packages_to_be_delivered at a particular time\n4 to display information for packages_to_be_delivered with extra requirements\n-1 to Exit")
+                           "3 to get the status of all packages at a particular time\n"
+                           "4 to get the status of all packages at a particular time sorted by status\n"
+                           "5 to display information for packages with extra requirements\n-1 to Exit")
         print(welcome_message)
 
         while True:
@@ -30,15 +32,17 @@ class UI:
             elif user_input == '3':
                 self.get_all_packages()
             elif user_input == '4':
-                self.get_special_requirements()
+                self.get_all_packages_sorted()
             elif user_input == '5':
+                self.get_special_requirements()
+            elif user_input == '6':
                 print(welcome_message)
             elif user_input == '-1':
                 break
             # elif special notes
             else:
                 print("Invalid Input")
-            print("\nEnter 5 to repeat menu options")
+            print("\nEnter 6 to repeat menu options")
 
     def get_final_status(self):
         """Prints delivery information for all packages and total combined mileage traveled by all trucks
@@ -87,6 +91,37 @@ class UI:
         for package in self.package_list:
             print(f"Status of Package {package.package_id} at {user_time}: {self.get_package_status(package, user_time)}")
 
+    def get_all_packages_sorted(self):
+        """Prints the status of all packages at a particular time of the user's choosing, sorted by category
+                """
+        while True:
+            try:
+                user_input = input("Enter time (HH:MM)\n")
+                user_time = datetime.datetime.strptime(user_input, "%H:%M").time()
+                break
+            except:
+                print("Invalid input")
+        package_status_strings = []
+        for package in self.package_list:
+            package_status_strings.append(f"Status of Package {package.package_id} at {user_time}: {self.get_package_status(package, user_time)}")
+        print("--Packages at Hub:")
+        for package_status in package_status_strings:
+            if "At Hub" in package_status:
+                print(package_status)
+        print("\n--Packages on Truck 1:")
+        for package_status in package_status_strings:
+            if "On Truck No. 1" in package_status:
+                print(package_status)
+        print("\n--Packages on Truck 2:")
+        for package_status in package_status_strings:
+            if "On Truck No. 2" in package_status:
+                print(package_status)
+        print("\n--Packages Delivered")
+        for package_status in package_status_strings:
+            if "Delivered" in package_status:
+                print(package_status)
+
+
     def get_package_status(self, the_package: Package, the_time: datetime.time):
         """Helper function used by get_all_packages and get_one_package. Returns a packages status in an easily readable format
 
@@ -109,7 +144,7 @@ class UI:
         print("--Packages with a delivery deadline--")
         for p in packages_with_delivery_deadlines:
             package = self.package_hash.search(p)
-            print(f"{package.package_id}, deadline: {package.deliver_deadline} delivered: {package.time_delivered}")
+            print(f"{package.package_id}, deadline: {package.delivery_deadline} delivered: {package.time_delivered}")
         print()
         packages_that_arrive_late_to_hub = [6, 9, 25, 28, 32]
         print("--Packages that arrive late to hub--")

@@ -19,7 +19,7 @@ class Package:
         self.city = city
         self.state = state
         self.zip_code = zip_code
-        self.deliver_deadline = delivery_deadline
+        self.delivery_deadline = delivery_deadline
         self.weight = weight
         self.special_notes = special_notes
         self.status = PackageStatus.AT_HUB
@@ -29,7 +29,7 @@ class Package:
         self.truck = None
 
     def __str__(self):
-        return f"{self.package_id}, {self.address}, {self.deliver_deadline}, {self.special_notes}"
+        return f"{self.package_id}, {self.address}, {self.delivery_deadline}, {self.special_notes}"
 
 
 

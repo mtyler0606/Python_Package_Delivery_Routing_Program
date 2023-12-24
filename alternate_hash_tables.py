@@ -33,7 +33,7 @@ class chained_hash_table_alternate:
         inserts a Package type object into the hash table
             Time complexity: O(N), Space complexity: O(N) where N is the length of each bucket
             :param key: integer
-            :param item: Package type only
+            :param new_item: Package type only
             :raises: error if exact key and item are already in the hash table
         """
         bucket = self.hash_function(key)
@@ -57,6 +57,13 @@ class chained_hash_table_alternate:
         for item in self.table[bucket]:
             if item[0] == key:
                 return item[1]
+
+    def alternate_search(self, key: int):
+        bucket = self.hash_function(key)
+        for item in self.table[bucket]:
+            if item[0] == key:
+                package = item[1]
+                return package.address, package.delivery_deadline, package.city, package.zip_code, package.weight, package.status, package.time_delivered
 
     # Time O(N), Space O(N) where N is the length of each bucket
     def remove(self, key):
