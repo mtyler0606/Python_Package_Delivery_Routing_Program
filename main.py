@@ -47,15 +47,17 @@ def main():
     # Set initial location for each truck to "HUB"
     truck1 = truck.Truck(1)
     truck1.current_location = dictionary_of_addresses["HUB"]
+    truck1.hub = dictionary_of_addresses["HUB"]
     truck2 = truck.Truck(2)
     truck2.current_location = dictionary_of_addresses["HUB"]
+    truck2.hub = dictionary_of_addresses["HUB"]
 
     # Load the trucks
     # Lists hold package id's used for load_package method in the Truck class
-    load_truck1_first_time = [4, 40, 1, 29, 7, 2, 33, 31, 32, 17, 28, 6]
-    load_truck2_first_time = [15, 16, 34, 14, 19, 36, 27, 35, 13, 39, 3, 37, 38, 30, 20, 21]
-    load_truck1_second_time = [8, 9, 10, 5]
-    load_truck2_second_time = [25, 26, 22, 24, 18, 11, 23, 12]
+    load_truck1_first_time = [4, 40, 1, 29, 7, 2, 33, 31, 32, 17, 28, 6]  # 12 packages
+    load_truck2_first_time = [15, 16, 34, 14, 19, 36, 27, 35, 13, 39, 3, 37, 38, 30, 20, 21]  # 16 packages
+    load_truck1_second_time = [8, 9, 10, 5]  # 4 packages
+    load_truck2_second_time = [25, 26, 22, 24, 18, 11, 23, 12]  # 8 packages
 
     # Set the time for truck1 to 9:05 (for later departure)
     truck1.time = datetime.datetime(2024, 1, 1, 9, 5, 0, 0)

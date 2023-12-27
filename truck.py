@@ -14,6 +14,7 @@ class Truck:
         self.distance_traveled = 0
         self.number = truck_number
         self.deliveries = []
+        self.hub = None
 
     def load_package(self, package: Package):
         """load_package: adds package object to a truck's packages_to_be_delivered list
@@ -68,7 +69,9 @@ class Truck:
                     break
         # once the packages_to_be_delivered list is empty the truck returns to the hub
         self.advance_time_and_distance(self.current_location.distance_lookup["HUB"])
-        self.current_location = "HUB"
+        self.current_location = self.hub
+        new_delivery = delivery.Delivery(self, None, self.hub, self.time.time(), round(self.distance_traveled, 5))
+        self.deliveries.append(new_delivery)
 
     # adds the appropriate amount to the time and distance traveled based on the distance between locations
     def advance_time_and_distance(self, miles: float):

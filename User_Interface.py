@@ -17,7 +17,7 @@ class UI:
         """ Starts the user interface. User can select different options from the terminal to display delivery information
             When the user inputs "-1" the program concludes
         """
-        welcome_message = ("Enter:\n1 for Status of All Packages and Total Mileage\n2 to get status of a single package at a particular time\n"
+        welcome_message = ("Enter:\n1 All Deliveries and Total Mileage\n2 to get status of a single package at a particular time\n"
                            "3 to get the status of all packages at a particular time\n"
                            "4 to get the status of all packages at a particular time sorted by status\n"
                            "5 to display information for packages with extra requirements\n-1 to Exit")
@@ -51,7 +51,8 @@ class UI:
         for d in sorted(self.deliveries, key=lambda x: x.time):
             print(d)
         total_distance = self.truck1.distance_traveled + self.truck2.distance_traveled
-        print("\nTotal distance of traveled by all trucks", round(total_distance, 5))
+        print("\nTruck 1 distance traveled:", round(self.truck1.distance_traveled, 5), "Truck 2 distance traveled:",
+              round(self.truck2.distance_traveled, 5), "\nTotal distance of traveled by all trucks", round(total_distance, 5))
 
     def get_one_package(self):
         """Prints the status of one package at a specific time.
@@ -103,18 +104,19 @@ class UI:
                 print("Invalid input")
         package_status_strings = []
         for package in self.package_list:
-            package_status_strings.append(f"Status of Package {package.package_id} at {user_time}: {self.get_package_status(package, user_time)}")
+            # package_status_strings.append(f"Status of Package {package.package_id} at {user_time}: {self.get_package_status(package, user_time)}")
+            package_status_strings.append(self.lookup_package_status(package.package_id, user_time))
         print("--Packages at Hub:")
         for package_status in package_status_strings:
             if "At Hub" in package_status:
                 print(package_status)
         print("\n--Packages on Truck 1:")
         for package_status in package_status_strings:
-            if "On Truck No. 1" in package_status:
+            if "En Route, on truck no. 1" in package_status:
                 print(package_status)
         print("\n--Packages on Truck 2:")
         for package_status in package_status_strings:
-            if "On Truck No. 2" in package_status:
+            if "En Route, on truck no. 2" in package_status:
                 print(package_status)
         print("\n--Packages Delivered")
         for package_status in package_status_strings:
@@ -132,9 +134,9 @@ class UI:
         if the_time < the_package.time_loaded:
             return "At Hub"
         if the_time >= the_package.time_loaded and the_time < the_package.time_delivered:
-            return f"On Truck No. {the_package.truck.number}"
+            return f"En Route, on truck no. {the_package.truck.number}"
         if the_time >= the_package.time_delivered:
-            return "Delivered"
+            return f"Delivered ({the_package.time_delivered})"
 
     def get_special_requirements(self):
         """Prints the information about all the packages that have special delivery requirements or constraints
@@ -163,3 +165,32 @@ class UI:
         for p in packages_required_to_be_delivered_together:
             package = self.package_hash.search(p)
             print(f"{package.package_id}, Truck No. {package.truck.number} Loaded: {package.time_loaded}")
+
+    def lookup_single_package_at_time(self, package_id:int, time_string: str):
+        """
+        Returns information about a single package in self.package_hash at a particular time
+        :param package_id: package_id: integer, the package id of a packaged in the package hash
+        :param time_string: a string representing a specific time in "%H: %M" format,
+        converted by function into a time object, and used as a parameter in the get_package_method to retrieve
+        a string representing the package's status at the specific time given
+        :return: the package's address, delivery deadline, city, zip code weight, time delivered, and status at time given
+        """
+        converted_time = datetime.datetime.strptime(time_string, "%H:%M").time()
+        the_package = self.package_hash.search(package_id)
+        return (the_package.address.name, the_package.delivery_deadline, the_package.city, the_package.zip_code,
+                the_package.weight, the_package.time_delivered,
+                f"Status of Package {package_id} at {time_string}: {self.get_package_status(the_package, converted_time)}")
+
+    def lookup_package_status(self, package_id:int, time: datetime.time):
+        """
+                Returns information about a single package in self.package_hash at a particular time as a formatted string
+                :param package_id: package_id: integer, the package id of a packaged in the package hash
+                :param time: a datetime.time object, the function looks up a package's status at this time
+                :return: the package's address, delivery deadline, city, zip code weight,
+                time delivered, and status at time given as a formatted sting
+                """
+        the_package = self.package_hash.search(package_id)
+        return (f"ID {the_package.package_id} ({the_package.address.name}, {the_package.city}, {the_package.zip_code}), "
+                f"Deadline: {the_package.delivery_deadline}, Wt: {the_package.weight}, "
+                f"---- Status at {time.__str__()}: {self.get_package_status(the_package, time)}")
+

@@ -59,6 +59,12 @@ class chained_hash_table_alternate:
                 return item[1]
 
     def alternate_search(self, key: int):
+        """alternate_search: retrieves package information from the hash table.
+        This alternate version of the search method returns the required items from a package individually
+        rather than as a package object
+        :param key: integer representing a package id
+        :return: package's address, delivery deadline, city, zip code, weight, status, and time delivered
+        """
         bucket = self.hash_function(key)
         for item in self.table[bucket]:
             if item[0] == key:

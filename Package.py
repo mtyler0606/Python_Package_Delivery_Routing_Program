@@ -32,7 +32,6 @@ class Package:
         return f"{self.package_id}, {self.address}, {self.delivery_deadline}, {self.special_notes}"
 
 
-
 def get_packages():
     """get_packages: reads CSV file and extracts package data, creates a Package object for each package
     adds packages to hash table and list
